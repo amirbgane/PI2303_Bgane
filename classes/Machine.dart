@@ -5,13 +5,18 @@ class Machine {
   int _water = 2000;       // начальный запас воды в мл
   int _cash = 0;           // начальная выручка в рублях
 
-  // Геттеры (для получения значений полей)
+  // Константы для рецепта эспрессо
+  static const int ESPRESSO_COFFEE = 50;
+  static const int ESPRESSO_WATER = 100;
+  static const int ESPRESSO_PRICE = 150;
+
+  // Геттеры
   int get coffeeBeans => _coffeeBeans;
   int get milk => _milk;
   int get water => _water;
   int get cash => _cash;
 
-  // Сеттеры (для установки значений полей)
+  // Сеттеры
   set coffeeBeans(int value) {
     if (value >= 0) {
       _coffeeBeans = value;
@@ -38,28 +43,23 @@ class Machine {
 
   // Метод проверки доступности ресурсов для эспрессо
   bool isAvailable() {
-    // Для эспрессо нужно: 50 гр кофе, 100 мл воды
-    return (_coffeeBeans >= 50) && (_water >= 100);
+    return (_coffeeBeans >= ESPRESSO_COFFEE) && (_water >= ESPRESSO_WATER);
   }
 
   // Закрытый метод уменьшения ресурсов 
   void _subtractResources() {
-    _coffeeBeans -= 50;  // расход кофе на эспрессо
-    _water -= 100;       // расход воды на эспрессо
-    _cash += 150;        // цена эспрессо 150 руб.
+    _coffeeBeans -= ESPRESSO_COFFEE;
+    _water -= ESPRESSO_WATER;
+    _cash += ESPRESSO_PRICE;
   }
 
-  // Публичный метод приготовления кофе
-  bool makingCoffee() {
-    if (isAvailable()) {
-      _subtractResources();
-      return true;  // кофе успешно приготовлен
-    } else {
-      return false; // недостаточно ресурсов
-    }
+  // Публичный метод ,который только готовит кофе
+  bool makeCoffee() {
+    _subtractResources();
+    return true;
   }
 
-  // Дополнительный метод для отображения состояния машины
+  // отображение состояния машины
   void printStatus() {
     print('\n=== Состояние кофемашины ===');
     print('Кофе: $_coffeeBeans гр');
